@@ -4,7 +4,7 @@
 clear all;
 close all;
 clc;
-theta_input = 0:360; % Angle Input
+theta_input = 0:2160; % Angle Input 6 revolutions
 w_input = 1; % Angular Velocity Input
 
 %matrix_5V = readmatrix("Project_2\Test1_5pt5V");
