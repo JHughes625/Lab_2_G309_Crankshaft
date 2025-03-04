@@ -17,5 +17,6 @@ for i = 1:length(filename)
         end
     end
     dataStruct(i).data = dataStruct(i).data(start:end, :);
+    dataStruct(i).data.Var2 = dataStruct(i).data.Var2 - dataStruct(i).data.Var2(1);
 end
 end
