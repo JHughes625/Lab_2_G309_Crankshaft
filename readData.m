@@ -1,22 +1,22 @@
 %% Input
 %filename vector
 
-function[dataStruct] = readData(filename)
-dataStruct = struct();
-
-for i = 1:length(filename)
-    dataStruct(i).filename = filename(i);
-    dataStruct(i).data = readtable(filename(i));
-end
-
-for i = 1:length(filename)
-    for j = 2:height(dataStruct(i).data)
-        if dataStruct(i).data.Var3(j) > dataStruct(i).data.Var3(j-1) && dataStruct(i).data.Var3(j) < 5
-            start = j-1;
-            break
-        end
-    end
-    dataStruct(i).data = dataStruct(i).data(start:end, :);
-    dataStruct(i).data.Var2 = dataStruct(i).data.Var2 - dataStruct(i).data.Var2(1);
-end
+function[theta, w, v, t] = readData(filename)
+    %read file
+    data = readmatrix(filename);
+    %find low point
+    start = find(data(:,3) < .3, 1, 'first');
+    
+    %cleaning
+    data(1:start-1,:) = [];
+    theta0 = data(1,2);
+    data(:,2) = data(:,2) - theta0 + 152.2;
+    time0 = data(1,1);
+    data(:,1) = data(:,1) - time0;
+    
+    %outputs
+    theta = data(:,2);
+    w = data(:,4);
+    v = data(:,5)/10;
+    t = data(:,1);
 end
