@@ -24,8 +24,9 @@ for i = 1:6
 end
 
 %plot mod. vs exp.
+figure();
 for i = 1:6
-    figure()
+    subplot(2,3,i);
     plot(theta_exp{i},v_mod{i})
     hold on
     plot(theta_exp{i}, v_exp{i})
@@ -40,13 +41,66 @@ end
 
 %residuals
 error = {};
+figure();
 for i = 1:6
+    subplot(2,3,i);
     error{i} = v_mod{i} - v_exp{i};
-    figure()
     plot(t_exp{i}, error{i})
+    xlim([0 5])
+    ylim([-20 20])
     xlabel('Time (s)')
     ylabel('Velocity Error (cm/s)')
-    title('Velocity Error wrt Time', fignames(i))
+    title('Signed Velocity Error wrt Time', fignames(i))
     Average(i) = mean(error{i});
     Standard_Dev(i) = std(error{i});
 end
+
+%absolute residuals
+figure();
+for i = 1:6
+    subplot(2,3,i);
+    ABSerror{i} = abs(error{i});
+    plot(t_exp{i}, ABSerror{i})
+    xlim([0 5])
+    ylim([-2 20])
+    xlabel('Time (s)')
+    ylabel('Velocity Error (cm/s)')
+    title('Absolute Velocity Error wrt Time', fignames(i))
+end
+
+%compare signed vs absolute for 5.5V
+figure();
+plot(t_exp{1}, error{1})
+hold on
+plot(t_exp{1}, ABSerror{1})
+hold off
+legend('Signed Error', 'Absolute Error')
+title('Signed and Absolute Error wrt Time', fignames(1))
+xlabel('Time (s)')
+ylabel('Velocity Error (cm/s)')
+
+%all signed
+figure()
+hold on
+for i = 1:6
+    plot(t_exp{i}, error{i})
+end
+title('Signed Velocity Error wrt Time')
+xlabel('Time (s)')
+ylabel('Velocity Error (cm/s)')
+legend(fignames);
+xlim([0 5])
+hold off
+
+%all wrt theta
+figure()
+hold on
+for i = 1:6
+    plot(theta_exp{i}, error{i})
+end
+title('Signed Velocity Error wrt Theta')
+xlabel('Theta (deg)')
+ylabel('Velocity Error (cm/s)')
+legend(fignames);
+xlim([152.5 4472])
+hold off
